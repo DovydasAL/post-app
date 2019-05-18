@@ -11,6 +11,6 @@ angular.module('PostService', []).factory('Post', ['$http', function($http) {
         delete : function(postId) {
             return $http.delete('/api/post/' + postId);
         }
-    }
+    };
 
 }]);

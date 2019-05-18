@@ -1,20 +1,88 @@
 module.exports = function(grunt) {
 
     grunt.initConfig({
+        /*
+        ====================
+        JS
+        ====================
+        */
+        // Check JS for errors
+        jshint: {
+            all: ['public/js/**/*.js']
+        },
 
-        // Configure nodemon
+        // Minify JS
+        uglify: {
+            build: {
+                files: {
+                    'public/dist/js/app.min.js': ['public/js/**/*.js', 'public/js/*.js']
+                }
+            }
+        },
+
+        /*
+        ====================
+        CSS
+        ====================
+        */
+        // Process less CSS
+        less: {
+            build: {
+                files: {
+                    'public/dist/css/style.css': 'public/css/style.less'
+                }
+            }
+        },
+
+        // Minify less file
+        cssmin: {
+            build: {
+                files: {
+                    'public/dist/css/style.min.css': 'public/dist/css/style.css'
+                }
+            }
+        },
+
+        /*
+        ====================
+        Other
+        ====================
+        */
+        // Watch CSS/JS files
+        watch: {
+            css: {
+                files: ['public/css/**/*.less'],
+                tasks: ['less', 'cssmin']
+            },
+            js: {
+                files: ['public/js/**/*.js'],
+                tasks: ['jshint', 'uglify']
+            }
+        },
+
+        // Watch node for changes
         nodemon: {
             dev: {
                 script: 'server.js'
             }
+        },
+
+        // Run/Watch nodemon simultaneously
+        concurrent: {
+            options: {
+                logConcurrentOutput: true
+            },
+            tasks: ['nodemon', 'watch']
         }
 
     });
-
-    // Load nodemon
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-nodemon');
-
-    // Register the nodemon task when we run grunt
-    grunt.registerTask('default', ['nodemon']);
+    grunt.registerTask('default', ['less', 'cssmin', 'jshint', 'uglify', 'concurrent']);
 
 };
