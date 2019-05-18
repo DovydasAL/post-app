@@ -17,7 +17,7 @@ Config
 ====================
 */
 const port = process.env.PORT || 8080;
-const db = require('./config/db');
+const db = require('./api/config/db');
 mongoose.connect(db.url, {useNewUrlParser: true});
 
 // Parse application/json
@@ -32,15 +32,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
 app.use(methodOverride('X-HTTP-Method-Override'));
 
-// Static path set to public
-app.use(express.static(__dirname + '/public'));
+// Static path set to app
+app.use(express.static(__dirname + '/dist'));
 
 /*
 ====================
 Routes
 ====================
 */
-require('./app/routes')(app); // configure our routes
+require('./api/routes')(app); // configure our routes
 
 /*
 ====================

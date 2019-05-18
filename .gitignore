@@ -61,5 +61,4 @@ typings/
 .next
 
 # custom
-public/libs/
-public/dist/
+dist/

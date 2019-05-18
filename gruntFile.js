@@ -8,14 +8,14 @@ module.exports = function(grunt) {
         */
         // Check JS for errors
         jshint: {
-            all: ['public/js/**/*.js']
+            all: ['app/js/**/*.js']
         },
 
         // Minify JS
         uglify: {
             build: {
                 files: {
-                    'public/dist/js/app.min.js': ['public/js/**/*.js', 'public/js/*.js']
+                    'dist/js/app.min.js': ['app/js/**/*.js', 'app/js/*.js']
                 }
             }
         },
@@ -29,7 +29,7 @@ module.exports = function(grunt) {
         less: {
             build: {
                 files: {
-                    'public/dist/css/style.css': 'public/css/style.less'
+                    'dist/css/style.css': 'app/css/style.less'
                 }
             }
         },
@@ -38,7 +38,7 @@ module.exports = function(grunt) {
         cssmin: {
             build: {
                 files: {
-                    'public/dist/css/style.min.css': 'public/dist/css/style.css'
+                    'dist/css/style.min.css': 'dist/css/style.css'
                 }
             }
         },
@@ -48,15 +48,30 @@ module.exports = function(grunt) {
         Other
         ====================
         */
+
+        copy: {
+            main: {
+                expand: true,
+                flatten: true,
+                src: ['app/views/*'],
+                dest: 'dist/views',
+                filter: 'isFile'
+            },
+        },
+
         // Watch CSS/JS files
         watch: {
             css: {
-                files: ['public/css/**/*.less'],
+                files: ['app/css/**/*.less'],
                 tasks: ['less', 'cssmin']
             },
             js: {
-                files: ['public/js/**/*.js'],
+                files: ['app/js/**/*.js'],
                 tasks: ['jshint', 'uglify']
+            },
+            html: {
+                files: ['app/views/**/*.html'],
+                tasks: ['copy']
             }
         },
 
@@ -76,6 +91,7 @@ module.exports = function(grunt) {
         }
 
     });
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
@@ -83,6 +99,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-nodemon');
-    grunt.registerTask('default', ['less', 'cssmin', 'jshint', 'uglify', 'concurrent']);
+    grunt.registerTask('default', ['less', 'cssmin', 'jshint', 'uglify', 'copy', 'concurrent']);
 
 };
