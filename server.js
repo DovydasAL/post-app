@@ -4,11 +4,11 @@
 Modules
 ====================
 */
-var express        = require('express');
-var app            = express();
-var bodyParser     = require('body-parser');
-var methodOverride = require('method-override');
-var mongoose = require('mongoose');
+const express        = require('express');
+const app            = express();
+const bodyParser     = require('body-parser');
+const methodOverride = require('method-override');
+const mongoose = require('mongoose');
 
 
 /*
@@ -16,8 +16,8 @@ var mongoose = require('mongoose');
 Config
 ====================
 */
-var port = process.env.PORT || 8080;
-var db = require('./config/db');
+const port = process.env.PORT || 8080;
+const db = require('./config/db');
 mongoose.connect(db.url, {useNewUrlParser: true});
 
 // Parse application/json
